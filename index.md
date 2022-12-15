@@ -1,6 +1,6 @@
 ### Links
-- [GitHub](https://github.com/nkmk)
-- [Web site](https://nkmk.me)
+- [GitHub](https://github.com/rexfoneteng)
+- [Web site]()
 
 ### Atom package
 - [remove-whitespace](https://atom.io/packages/remove-whitespace)
