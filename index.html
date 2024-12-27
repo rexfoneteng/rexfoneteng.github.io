@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LaTeX Color Cleaner</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>LaTeX Format Cleaner</h2>
+        <div>
+            <label for="input">Input LaTeX Text:</label>
+            <textarea id="input" placeholder="Paste your LaTeX text here..."></textarea>
+        </div>
+        <button onclick="cleanLaTeX()">Remove Formatting</button>
+        <div>
+            <label for="output">Cleaned Output:</label>
+            <textarea id="output" readonly placeholder="Cleaned text will appear here..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        function cleanLaTeX() {
+            const input = document.getElementById('input').value;
+            // First remove textcolor formatting
+            let cleaned = input.replace(/\\textcolor\{[^}]+\}\{([^}]+)\}/g, '$1');
+            // Then remove sout formatting
+            cleaned = cleaned.replace(/\\sout\{([^}]+)\}/g, '$1');
+            document.getElementById('output').value = cleaned;
+        }
+    </script>
+</body>
+</html>
