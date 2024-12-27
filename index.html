@@ -91,7 +91,7 @@
 
         <!-- LaTeX Format Cleaner -->
         <div id="latexCleaner" class="tab-content active">
-            <div class="description">Remove LaTeX formatting commands like \textcolor{} and \sout{} while preserving the text inside.</div>
+            <div class="description">Remove LaTeX formatting commands. \textcolor{} formatting will preserve text inside, while \sout{} blocks will be completely removed.</div>
             <label for="latexInput">Input LaTeX Text:</label>
             <textarea id="latexInput" placeholder="Paste your LaTeX text here..."></textarea>
             <button onclick="cleanLaTeX()">Remove Formatting</button>
@@ -144,15 +144,19 @@
 
         function cleanLaTeX() {
             const input = document.getElementById('latexInput').value;
+            // Remove textcolor formatting but keep the text inside
             let cleaned = input.replace(/\\textcolor\{[^}]+\}\{([^}]+)\}/g, '$1');
-            cleaned = cleaned.replace(/\\sout\{([^}]+)\}/g, '$1');
+            // Remove sout blocks completely (including the text inside)
+            cleaned = cleaned.replace(/\\sout\{[^}]+\}/g, '');
+            // Remove any extra spaces that might be left
+            cleaned = cleaned.replace(/\s+/g, ' ').trim();
             document.getElementById('latexOutput').value = cleaned;
         }
 
         function convertCase(type) {
             const input = document.getElementById('caseInput').value;
             let result = input;
-            
+
             if (type === 'upper') {
                 result = input.toUpperCase();
             } else if (type === 'lower') {
@@ -160,7 +164,7 @@
             } else if (type === 'title') {
                 result = input.toLowerCase().replace(/(?:^|\s)\w/g, letter => letter.toUpperCase());
             }
-            
+
             document.getElementById('caseOutput').value = result;
         }
 
