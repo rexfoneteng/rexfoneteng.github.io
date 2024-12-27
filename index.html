@@ -1,179 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Text Processing Tools</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tech Blog</title>
     <style>
+        :root {
+            --primary-color: #4CAF50;
+            --text-color: #333;
+            --bg-color: #f5f5f5;
+            --card-bg: #ffffff;
+        }
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
         }
-        .container {
-            max-width: 1000px;
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: white;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-links a:hover {
+            background-color: var(--bg-color);
+        }
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background-color: var(--card-bg);
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 20px;
         }
-        .tabs {
-            display: flex;
-            border-bottom: 2px solid #ddd;
-            margin-bottom: 20px;
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
         }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            font-weight: 500;
+        .hero p {
+            font-size: 1.2rem;
             color: #666;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .tab.active {
-            color: #4CAF50;
-            border-bottom: 2px solid #4CAF50;
-            margin-bottom: -2px;
+        .posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
-        .tab-content {
-            display: none;
+        .post-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
         }
-        .tab-content.active {
-            display: block;
+        .post-card:hover {
+            transform: translateY(-5px);
         }
-        textarea {
-            width: 100%;
-            height: 200px;
-            margin: 10px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            line-height: 1.5;
+        .post-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
         }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 10px 0;
-            font-size: 14px;
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
         }
-        button:hover {
-            background-color: #45a049;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-            color: #333;
-        }
-        .description {
+        .post-excerpt {
             color: #666;
             margin-bottom: 15px;
-            font-size: 14px;
+        }
+        .read-more {
+            display: inline-block;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: var(--card-bg);
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="tabs">
-            <button class="tab active" onclick="openTab(event, 'latexCleaner')">LaTeX Format Cleaner</button>
-            <button class="tab" onclick="openTab(event, 'caseCleaner')">Case Converter</button>
-            <button class="tab" onclick="openTab(event, 'textCounter')">Text Counter</button>
-        </div>
-
-        <!-- LaTeX Format Cleaner -->
-        <div id="latexCleaner" class="tab-content active">
-            <div class="description">Remove LaTeX formatting commands. \textcolor{} formatting will preserve text inside, while \sout{} blocks will be completely removed.</div>
-            <label for="latexInput">Input LaTeX Text:</label>
-            <textarea id="latexInput" placeholder="Paste your LaTeX text here..."></textarea>
-            <button onclick="cleanLaTeX()">Remove Formatting</button>
-            <label for="latexOutput">Cleaned Output:</label>
-            <textarea id="latexOutput" readonly placeholder="Cleaned text will appear here..."></textarea>
-        </div>
-
-        <!-- Case Converter -->
-        <div id="caseCleaner" class="tab-content">
-            <div class="description">Convert text case between uppercase, lowercase, and title case.</div>
-            <label for="caseInput">Input Text:</label>
-            <textarea id="caseInput" placeholder="Enter text to convert..."></textarea>
-            <div>
-                <button onclick="convertCase('upper')">UPPERCASE</button>
-                <button onclick="convertCase('lower')">lowercase</button>
-                <button onclick="convertCase('title')">Title Case</button>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">My Tech Blog</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="tools.html">Text Tools</a>
+                <a href="about.html">About</a>
             </div>
-            <label for="caseOutput">Converted Output:</label>
-            <textarea id="caseOutput" readonly placeholder="Converted text will appear here..."></textarea>
-        </div>
+        </nav>
+    </header>
 
-        <!-- Text Counter -->
-        <div id="textCounter" class="tab-content">
-            <div class="description">Count characters, words, and lines in your text.</div>
-            <label for="counterInput">Input Text:</label>
-            <textarea id="counterInput" oninput="countText()" placeholder="Enter text to count..."></textarea>
-            <div id="countResults" style="margin: 10px 0; line-height: 1.6;">
-                Characters: <span id="charCount">0</span><br>
-                Words: <span id="wordCount">0</span><br>
-                Lines: <span id="lineCount">0</span>
-            </div>
-        </div>
-    </div>
+    <main>
+        <section class="hero">
+            <h1>Welcome to My Tech Blog</h1>
+            <p>Exploring technology, programming, and useful tools for developers</p>
+        </section>
 
-    <script>
-        function openTab(evt, tabName) {
-            let tabContents = document.getElementsByClassName("tab-content");
-            for (let content of tabContents) {
-                content.classList.remove("active");
-            }
+        <section class="posts">
+            <article class="post-card">
+                <div class="post-date">December 27, 2024</div>
+                <h2 class="post-title">Introducing Text Processing Tools</h2>
+                <p class="post-excerpt">A collection of useful tools for processing text, including LaTeX formatting cleaner, case converter, and text counter.</p>
+                <a href="tools.html" class="read-more">Try the tools →</a>
+            </article>
 
-            let tabs = document.getElementsByClassName("tab");
-            for (let tab of tabs) {
-                tab.classList.remove("active");
-            }
+            <article class="post-card">
+                <div class="post-date">December 27, 2024</div>
+                <h2 class="post-title">Working with LaTeX in Academic Writing</h2>
+                <p class="post-excerpt">Tips and tricks for efficiently working with LaTeX in academic papers and research documents.</p>
+                <a href="#" class="read-more">Read more →</a>
+            </article>
 
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
-        }
+            <article class="post-card">
+                <div class="post-date">December 27, 2024</div>
+                <h2 class="post-title">GitHub Pages for Beginners</h2>
+                <p class="post-excerpt">A step-by-step guide to creating and hosting your first website using GitHub Pages.</p>
+                <a href="#" class="read-more">Read more →</a>
+            </article>
+        </section>
+    </main>
 
-        function cleanLaTeX() {
-            const input = document.getElementById('latexInput').value;
-            // Remove textcolor formatting but keep the text inside
-            let cleaned = input.replace(/\\textcolor\{[^}]+\}\{([^}]+)\}/g, '$1');
-            // Remove sout blocks completely (including the text inside)
-            cleaned = cleaned.replace(/\\sout\{[^}]+\}/g, '');
-            // Remove any extra spaces that might be left
-            cleaned = cleaned.replace(/\s+/g, ' ').trim();
-            document.getElementById('latexOutput').value = cleaned;
-        }
-
-        function convertCase(type) {
-            const input = document.getElementById('caseInput').value;
-            let result = input;
-
-            if (type === 'upper') {
-                result = input.toUpperCase();
-            } else if (type === 'lower') {
-                result = input.toLowerCase();
-            } else if (type === 'title') {
-                result = input.toLowerCase().replace(/(?:^|\s)\w/g, letter => letter.toUpperCase());
-            }
-
-            document.getElementById('caseOutput').value = result;
-        }
-
-        function countText() {
-            const text = document.getElementById('counterInput').value;
-            document.getElementById('charCount').textContent = text.length;
-            document.getElementById('wordCount').textContent = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-            document.getElementById('lineCount').textContent = text.trim() === '' ? 0 : text.trim().split(/\n/).length;
-        }
-    </script>
+    <footer>
+        <p>© 2024 My Tech Blog. Created with ❤️ using GitHub Pages.</p>
+    </footer>
 </body>
 </html>
