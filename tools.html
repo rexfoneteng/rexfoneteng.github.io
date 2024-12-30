@@ -216,60 +216,17 @@
     </footer>
 
     <script>
-        function findClosingBrace(text, startIndex) {
-            let braceCount = 1;
-            let i = startIndex;
-            
-            while (i < text.length && braceCount > 0) {
-                if (text[i] === '{') braceCount++;
-                if (text[i] === '}') braceCount--;
-                i++;
-            }
-            
-            return i - 1;
-        }
-
         function cleanLaTeX() {
-            let input = document.getElementById('latexInput').value;
-            let result = '';
-            let i = 0;
+            const input = document.getElementById('latexInput').value;
+            // First handle textcolor
+            let result = input.replace(/\\textcolor\{([^}]*)\}\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, '$2');
 
-            while (i < input.length) {
-                if (input.slice(i).startsWith('\\textcolor{')) {
-                    i += 10;
-                    let colorEnd = findClosingBrace(input, i);
-                    if (colorEnd === -1) {
-                        result += input[i];
-                        i++;
-                        continue;
-                    }
-                    i = colorEnd + 2;
-                    let contentEnd = findClosingBrace(input, i);
-                    if (contentEnd === -1) {
-                        result += input[i];
-                        i++;
-                        continue;
-                    }
-                    result += input.slice(i, contentEnd);
-                    i = contentEnd + 1;
-                }
-                else if (input.slice(i).startsWith('\\sout{')) {
-                    i += 6;
-                    let soutEnd = findClosingBrace(input, i);
-                    if (soutEnd === -1) {
-                        result += input[i];
-                        i++;
-                        continue;
-                    }
-                    i = soutEnd + 1;
-                }
-                else {
-                    result += input[i];
-                    i++;
-                }
-            }
+            // Then handle sout
+            result = result.replace(/\\sout\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g, '');
 
+            // Clean up extra whitespace
             result = result.replace(/\s+/g, ' ').trim();
+
             document.getElementById('latexOutput').value = result;
         }
 
@@ -278,7 +235,9 @@
 
 Another example: \\textcolor{blue}{Text with multiple {nested} {braces} inside} and normal text.
 
-\\sout{Remove this entirely {even} {with} {nested} {braces}} but keep this.`;
+\\sout{Remove this entirely {even} {with} {nested} {braces}} but keep this.
+
+Simple example: This text has \\textcolor{red}{red color} and \\textcolor{blue}{blue color}.`;
             document.getElementById('latexInput').value = example;
         }
 
@@ -300,7 +259,7 @@ Another example: \\textcolor{blue}{Text with multiple {nested} {braces} inside} 
         function convertCase(type) {
             const input = document.getElementById('caseInput').value;
             let result = input;
-            
+
             if (type === 'upper') {
                 result = input.toUpperCase();
             } else if (type === 'lower') {
@@ -308,7 +267,7 @@ Another example: \\textcolor{blue}{Text with multiple {nested} {braces} inside} 
             } else if (type === 'title') {
                 result = input.toLowerCase().replace(/(?:^|\s)\w/g, letter => letter.toUpperCase());
             }
-            
+
             document.getElementById('caseOutput').value = result;
         }
 
